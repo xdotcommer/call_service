@@ -41,7 +41,7 @@ RSpec.describe CallFlow do
     context 'when all requests succeed' do
       before do
         # Stub APCO service request
-        stub_request(:get, "http://apco_service:4000/api/v1/call_types/MEDICAL")
+        stub_request(:get, 'http://apco_service:4000/api/v1/call_types/MEDICAL')
           .to_return(
             status: 200,
             headers: { 'Content-Type' => 'application/json' },
@@ -49,14 +49,14 @@ RSpec.describe CallFlow do
           )
 
         # Stub call logger request with exact body match
-        stub_request(:post, "http://call_logger:3333/calls")
+        stub_request(:post, 'http://call_logger:3333/calls')
           .with(
             body: expected_logger_body,
             headers: { 'Content-Type' => 'application/json' }
           )
           .to_return(
             status: 200,
-            body: "Call logged successfully"
+            body: 'Call logged successfully'
           )
       end
 
@@ -64,16 +64,16 @@ RSpec.describe CallFlow do
         expect { call_flow.handle_call }
           .to output(/Full Call Information:.*apco_code.*101/).to_stdout
 
-        expect(WebMock).to have_requested(:get, "http://apco_service:4000/api/v1/call_types/MEDICAL")
-        expect(WebMock).to have_requested(:post, "http://call_logger:3333/calls")
+        expect(WebMock).to have_requested(:get, 'http://apco_service:4000/api/v1/call_types/MEDICAL')
+        expect(WebMock).to have_requested(:post, 'http://call_logger:3333/calls')
           .with(body: expected_logger_body)
       end
     end
 
     context 'when APCO service request fails' do
       before do
-        stub_request(:get, "http://apco_service:4000/api/v1/call_types/MEDICAL")
-          .to_return(status: 500, body: "Internal Server Error")
+        stub_request(:get, 'http://apco_service:4000/api/v1/call_types/MEDICAL')
+          .to_return(status: 500, body: 'Internal Server Error')
       end
 
       it 'raises an error' do
@@ -85,7 +85,7 @@ RSpec.describe CallFlow do
     context 'when call logger request fails' do
       before do
         # Successful APCO request
-        stub_request(:get, "http://apco_service:4000/api/v1/call_types/MEDICAL")
+        stub_request(:get, 'http://apco_service:4000/api/v1/call_types/MEDICAL')
           .to_return(
             status: 200,
             headers: { 'Content-Type' => 'application/json' },
@@ -93,12 +93,12 @@ RSpec.describe CallFlow do
           )
 
         # Failed call logger request
-        stub_request(:post, "http://call_logger:3333/calls")
+        stub_request(:post, 'http://call_logger:3333/calls')
           .with(
             body: expected_logger_body,
             headers: { 'Content-Type' => 'application/json' }
           )
-          .to_return(status: 500, body: "Internal Server Error")
+          .to_return(status: 500, body: 'Internal Server Error')
       end
 
       it 'outputs error message but does not raise' do
@@ -109,8 +109,8 @@ RSpec.describe CallFlow do
 
     context 'when APCO service returns invalid JSON' do
       before do
-        stub_request(:get, "http://apco_service:4000/api/v1/call_types/MEDICAL")
-          .to_return(status: 200, body: "Invalid JSON")
+        stub_request(:get, 'http://apco_service:4000/api/v1/call_types/MEDICAL')
+          .to_return(status: 200, body: 'Invalid JSON')
       end
 
       it 'raises a parser error' do

@@ -4,10 +4,8 @@ require 'logger'
 require_relative 'lib/call_flow'
 
 before do
-  if request.request_method == "POST"
-    unless request.content_type&.include?('application/json')
-      halt 415, { error: 'Content Type must be application/json' }.to_json
-    end
+  if request.request_method == 'POST' && !request.content_type&.include?('application/json')
+    halt 415, { error: 'Content Type must be application/json' }.to_json
   end
 end
 
@@ -19,9 +17,7 @@ post '/call_details' do
   request_body = request.body.read
   logger.info "Received body: #{request_body}"
 
-  if request_body.empty?
-    halt 400, json(error: 'Empty request body')
-  end
+  halt 400, json(error: 'Empty request body') if request_body.empty?
 
   begin
     data = JSON.parse(request_body)

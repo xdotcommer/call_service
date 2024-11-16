@@ -10,7 +10,7 @@ class CallFlow
   end
 
   def post_format
-    {'call' => @attributes}
+    { 'call' => @attributes }
   end
 
   def handle_call
@@ -26,7 +26,7 @@ class CallFlow
 
   def log_call
     # Use the service name and internal port for call_logger
-    url = URI("http://call_logger:3333/calls")  # assuming 'web' is the service name for call_logger
+    url = URI('http://call_logger:3333/calls') # assuming 'web' is the service name for call_logger
     http = Net::HTTP.new(url.host, url.port)
     request = Net::HTTP::Post.new(url)
     request['Content-Type'] = 'application/json'
@@ -44,17 +44,15 @@ class CallFlow
 
   def fetch_apco_info
     # Use the service name and internal port for apco_incident_types
-    url = URI("http://apco_service:4000/api/v1/call_types/#{@call_type}")  # assuming 'web' is the service name for apco_incident_types
+    url = URI("http://apco_service:4000/api/v1/call_types/#{@call_type}") # assuming 'web' is the service name for apco_incident_types
 
     # Make the HTTP request
     response = Net::HTTP.get_response(url)
 
     # Handle the response
-    if response.is_a?(Net::HTTPSuccess)
-      JSON.parse(response.body)
-    else
-      raise "Error fetching APCO info: #{response.code} - #{response.message}"
-    end
+    raise "Error fetching APCO info: #{response.code} - #{response.message}" unless response.is_a?(Net::HTTPSuccess)
+
+    JSON.parse(response.body)
   rescue JSON::ParserError => e
     raise "Error parsing APCO response: #{e.message}"
   end
