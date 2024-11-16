@@ -28,12 +28,6 @@ cd call_service
 bundle install
 ```
 
-3. Set up your database:
-```bash
-bundle exec rake db:create
-bundle exec rake db:migrate
-```
-
 ## Configuration
 
 The service requires several environment variables to be set:
@@ -148,7 +142,15 @@ The service handles various error cases:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## Related Projects
+## Related Services
 
 - [CAD Call Simulator](https://github.com/xdotcommer/cad-call-simulator) - A Python tool for simulating incident data
-- APCO Service - Integration service for APCO standards and codes
+- [Call Service](https://github.com/xdotcommer/call_service) - Main call processing service
+- [APCO Service](https://github.com/xdotcommer/apco_incident_types_service) - APCO code lookup service
+- [Call Logger](https://github.com/xdotcommer/call_logger) - Persistent storage service for emergency call data
+
+This microservices ecosystem provides a complete solution for:
+- Simulating emergency calls (CAD Call Simulator)
+- Processing and routing calls (Call Service)
+- Standardizing call types (APCO Service)
+- Storing call history (Call Logger)
