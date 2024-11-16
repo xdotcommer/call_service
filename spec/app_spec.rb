@@ -13,7 +13,7 @@ RSpec.describe 'Sinatra App' do
   # Set up common stubs before each test
   before do
     # Stub APCO service request
-    stub_request(:get, /http:\/\/apco_service:4000\/api\/v1\/call_types\/.*/)
+    stub_request(:get, %r{http://apco_service:4000/api/v1/call_types/.*})
       .to_return(
         status: 200,
         body: {
@@ -24,8 +24,8 @@ RSpec.describe 'Sinatra App' do
       )
 
     # Stub call logger request
-    stub_request(:post, "http://call_logger:3333/calls")
-      .to_return(status: 200, body: "Call logged successfully")
+    stub_request(:post, 'http://call_logger:3333/calls')
+      .to_return(status: 200, body: 'Call logged successfully')
   end
 
   describe 'GET /health' do
@@ -64,8 +64,8 @@ RSpec.describe 'Sinatra App' do
 
     context 'when CallFlow raises an error' do
       before do
-        stub_request(:get, /http:\/\/apco_service:4000\/api\/v1\/call_types\/.*/)
-          .to_return(status: 500, body: "Internal Server Error")
+        stub_request(:get, %r{http://apco_service:4000/api/v1/call_types/.*})
+          .to_return(status: 500, body: 'Internal Server Error')
       end
 
       it 'returns 500 with error message' do
