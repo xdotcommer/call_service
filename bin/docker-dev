@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Make sure the script is executable
+# chmod +x bin/docker-dev
+
+case "$1" in
+  up)
+    docker compose up
+    ;;
+  build)
+    docker compose build
+    ;;
+  rspec)
+    docker compose run rspec app_spec.rb
+    ;;
+  *)
+    echo "Usage: bin/docker-dev [command]"
+    echo "Commands:"
+    echo "  up         - Start the development environment"
+    echo "  build      - Rebuild the Docker images"
+    echo "  rspec      - Run RSpec tests"
+    ;;
+esac

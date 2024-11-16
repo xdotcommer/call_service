@@ -1,0 +1,17 @@
+services:
+  call_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "9292:4567"
+    volumes:
+      - .:/app
+    environment:
+      - RACK_ENV=development
+    networks:
+      - shared-network
+
+networks:
+  shared-network:
+    external: true
